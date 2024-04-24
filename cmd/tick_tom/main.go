@@ -11,13 +11,18 @@ import (
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"
+	"github.com/troptropcontent/tick_tom/internal/env"
 	"github.com/troptropcontent/tick_tom/internal/handlers/auth"
 	"github.com/troptropcontent/tick_tom/internal/handlers/root"
-	"github.com/troptropcontent/tick_tom/internal/initializers/env"
+	db_initializer "github.com/troptropcontent/tick_tom/internal/initializers/db"
+	env_initializer "github.com/troptropcontent/tick_tom/internal/initializers/env"
+	models_initializer "github.com/troptropcontent/tick_tom/internal/initializers/models"
 )
 
 func init() {
-	env.Init()
+	env_initializer.Init()
+	db_initializer.Init()
+	models_initializer.Init()
 }
 
 type Template struct {

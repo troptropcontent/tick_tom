@@ -6,8 +6,6 @@ import (
 )
 
 func Index(c echo.Context) error {
-	current_user_email, _ := auth.GetCurrentUserEmailFromContext(c)
-	return c.Render(200, "root/index.html", map[string]interface{}{
-		"current_user_email": current_user_email,
-	})
+	current_user, _ := auth.GetCurrentUserFromContext(c)
+	return c.Render(200, "root/index.html", current_user)
 }
