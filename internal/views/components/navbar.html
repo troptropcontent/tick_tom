@@ -1,0 +1,9 @@
+{{define "components/navbar.html"}}
+  <nav class="navbar">
+    <a class='text--xxl' href="/">Home</a>
+    <form action="/auth/logout" method="POST">
+      <input type="submit" value="Logout" class="btn btn--primary">
+    </form>
+  </nav>
+{{end}}
+

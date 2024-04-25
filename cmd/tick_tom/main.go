@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"html/template"
 	"io"
 
@@ -26,19 +27,16 @@ func init() {
 }
 
 type Template struct {
-	templates *template.Template
+	templates map[string]*template.Template
 }
 
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
-
-func getUser(c echo.Context) (*sessions.Session, error) {
-	user, err := gothic.Store.Get(c.Request(), "user")
-	if err != nil {
-		return nil, err
+	tmpl, ok := t.templates[name]
+	if !ok {
+		err := errors.New("Template not found -> " + name)
+		return err
 	}
-	return user, nil
+	return tmpl.ExecuteTemplate(w, "application/layout.html", data)
 }
 
 func main() {
@@ -62,14 +60,16 @@ func main() {
 	)
 
 	// Renderer
-	t := &Template{
-		templates: template.Must(template.ParseGlob("public/views/**/*.html")),
+	templates := make(map[string]*template.Template)
+	templates["root/index.html"] = template.Must(template.ParseFiles("internal/views/root/index.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
+	templates["auth/login.html"] = template.Must(template.ParseFiles("internal/views/auth/login.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
+	e.Renderer = &Template{
+		templates: templates,
 	}
-	e.Renderer = t
 
 	// Routes
 	// Static assets
-	e.Static("/static", "assets")
+	e.Static("/static", "public")
 	// Authentification
 	e.GET("/auth/callback", auth.Signin).Name = "auth.callback"
 	e.GET("/auth", auth.OAuth).Name = "auth.oauth"
