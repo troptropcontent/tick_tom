@@ -6,5 +6,10 @@ import (
 )
 
 func Init() {
-	db.DB.AutoMigrate(&models.User{})
+	db.DB.AutoMigrate(
+		&models.User{},
+		&models.Project{},
+		&models.Task{},
+		&models.Session{},
+	)
 }

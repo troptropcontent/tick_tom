@@ -7,10 +7,9 @@ import (
 
 type User struct {
 	gorm.Model
-	Email string
+	Email string `gorm:"unique"`
 }
 
 func (u *User) Create() error {
-	db.DB.Create(u)
-	return nil
+	return db.DB.Create(u).Error
 }
