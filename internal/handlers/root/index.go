@@ -7,5 +7,9 @@ import (
 
 func Index(c echo.Context) error {
 	current_user, _ := auth.GetCurrentUserFromContext(c)
-	return c.Render(200, "root/index.html", current_user)
+	logout_url := c.Echo().Reverse("auth.logout")
+	return c.Render(200, "root/index.html", map[string]any{
+		"current_user": current_user,
+		"logout_url":   logout_url,
+	})
 }

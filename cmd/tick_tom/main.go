@@ -68,10 +68,13 @@ func main() {
 	e.Renderer = t
 
 	// Routes
+	// Static assets
+	e.Static("/static", "assets")
 	// Authentification
-	e.GET("/auth/callback", auth.Signin)
-	e.GET("/auth", auth.OAuth)
-	e.GET("/auth/login", auth.Login)
+	e.GET("/auth/callback", auth.Signin).Name = "auth.callback"
+	e.GET("/auth", auth.OAuth).Name = "auth.oauth"
+	e.GET("/auth/login", auth.Login).Name = "auth.login"
+	e.POST("/auth/logout", auth.Logout).Name = "auth.logout"
 
 	// Root
 	e.GET("/", auth.RequireAuthenticatedUser(root.Index))
