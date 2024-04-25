@@ -1,0 +1,13 @@
+{{define "application/layout.html"}}
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>{{template "title" .}}</title>
+      <link rel="stylesheet" href="/static/css/application.css">
+    </head>
+    <body>
+      {{template "components/navbar.html"}}
+      {{template "body" .}}
+    </body>
+  </html>
+{{end}}

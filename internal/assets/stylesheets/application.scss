@@ -1,0 +1,15 @@
+// All our variables
+@use 'config/variables';
+
+// Fix the base css elements to avoid differences between browsers
+@use 'config/reset';
+
+// The mixins for media queries for example
+@use 'mixins/media';
+
+// Components
+@use 'components/navbar';
+@use 'components/btn';
+
+// Utilities (like typography, spaces etc)
+@use 'utilities/typography';
