@@ -1,6 +1,6 @@
 {{define "components/navbar.html"}}
-  <nav class="navbar">
-    <a class='text--xxl' href="/">Home</a>
+  <nav class="flex flex-row justify-between items-center px-10 py-5">
+    <a class='text-2xl' href="/">Home</a>
     <form action="/auth/logout" method="POST">
       <input type="submit" value="Logout" class="btn btn--primary">
     </form>

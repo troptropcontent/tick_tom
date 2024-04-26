@@ -14,6 +14,7 @@ import (
 	"github.com/markbates/goth/providers/google"
 	"github.com/troptropcontent/tick_tom/internal/env"
 	"github.com/troptropcontent/tick_tom/internal/handlers/auth"
+	projects_handlers "github.com/troptropcontent/tick_tom/internal/handlers/projects"
 	"github.com/troptropcontent/tick_tom/internal/handlers/root"
 	db_initializer "github.com/troptropcontent/tick_tom/internal/initializers/db"
 	env_initializer "github.com/troptropcontent/tick_tom/internal/initializers/env"
@@ -63,6 +64,7 @@ func main() {
 	templates := make(map[string]*template.Template)
 	templates["root/index.html"] = template.Must(template.ParseFiles("internal/views/root/index.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
 	templates["auth/login.html"] = template.Must(template.ParseFiles("internal/views/auth/login.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
+	templates["projects/new.html"] = template.Must(template.ParseFiles("internal/views/projects/new.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	e.Renderer = &Template{
 		templates: templates,
 	}
@@ -78,6 +80,10 @@ func main() {
 
 	// Root
 	e.GET("/", auth.RequireAuthenticatedUser(root.Index))
+
+	// Projects
+	projects := e.Group("projects")
+	projects.GET("/new", projects_handlers.New).Name = "projects.new"
 
 	// Start server
 	e.Logger.Fatal(e.Start(":3000"))
