@@ -9,6 +9,11 @@ ENV SASS_VERSION 1.75.0
 ADD https://github.com/sass/dart-sass/releases/download/${SASS_VERSION}/dart-sass-${SASS_VERSION}-linux-arm64.tar.gz /opt/
 RUN tar -C /opt/ -xzvf /opt/dart-sass-${SASS_VERSION}-linux-arm64.tar.gz
 
+# Install tailwind
+RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-arm64 
+RUN chmod +x tailwindcss-linux-arm64
+RUN mv tailwindcss-linux-arm64 /tailwindcss
+
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
