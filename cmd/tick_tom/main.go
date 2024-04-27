@@ -62,7 +62,7 @@ func main() {
 
 	// Renderer
 	templates := make(map[string]*template.Template)
-	templates["root/index.html"] = template.Must(template.ParseFiles("internal/views/root/index.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
+	templates["root/index.html"] = template.Must(template.ParseFiles("internal/views/root/index.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	templates["auth/login.html"] = template.Must(template.ParseFiles("internal/views/auth/login.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
 	templates["projects/new.html"] = template.Must(template.ParseFiles("internal/views/projects/new.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	e.Renderer = &Template{

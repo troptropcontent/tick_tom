@@ -3,9 +3,8 @@
 {{end}}
 
 {{define "body"}}
-<h1>Hello, From the index page!</h1>
-<h1>Hello, {{.current_user.Email}}</h1>
-<form action="{{.logout_url}}" method="POST">
-  <input type="submit" value="Logout">
-</form>
+<section class="flex flex-col mx-10 gap-3 grow my-5 bg-white p-3 rounded-md shadow-sm">
+  {{ template "components/header.html" . }}
+  <h1>Work in progress</h1>
+</section>
 {{end}}
