@@ -15,5 +15,7 @@ func Index(c echo.Context) error {
 		c.Redirect(302, c.Echo().Reverse("projects.new"))
 	}
 
-	return c.Render(200, "root/index.html", "")
+	return c.Render(200, "root/index.html", map[string]string{
+		"name": "Index",
+	})
 }

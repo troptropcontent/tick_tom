@@ -1,0 +1,10 @@
+{{define "title"}}All your projects{{end}}
+
+{{define "body"}}
+{{ template "components/header.html" . }}
+<ul>
+  {{range $project := .Projects}}
+     {{ template "projects/project" $project }}
+  {{end}}
+</ul>
+{{end}}
