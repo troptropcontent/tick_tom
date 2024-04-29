@@ -7,11 +7,20 @@ import (
 	"github.com/troptropcontent/tick_tom/internal/models"
 )
 
+type ShowTemplateTranslation struct {
+	ButtonMain    string
+	ButtonCaption string
+	Hours         string
+	Minutes       string
+	Secondes      string
+}
 type ShowTemplateData struct {
 	HeaderData struct {
 		Title string
 	}
-	Project models.Project
+	Project     models.Project
+	LastSession models.Session
+	Translation ShowTemplateTranslation
 }
 
 func Show(c echo.Context) error {
@@ -22,9 +31,23 @@ func Show(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+	var last_session models.Session
+	err = db.DB.Where(&models.Session{
+		HolderID: project.ID,
+	}).Limit(1).Find(&last_session).Error
+	if err != nil {
+		return err
+	}
 
 	return c.Render(200, "projects/show.html", ShowTemplateData{
-		HeaderData: struct{ Title string }{Title: "Project " + project.Name},
-		Project:    project,
+		HeaderData:  struct{ Title string }{Title: "Project " + project.Name},
+		Project:     project,
+		LastSession: last_session,
+		Translation: ShowTemplateTranslation{
+			ButtonMain: "Start",
+			Hours:      "hours",
+			Minutes:    "minutes",
+			Secondes:   "secondes",
+		},
 	})
 }

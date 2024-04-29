@@ -66,7 +66,7 @@ func main() {
 	templates["auth/login.html"] = template.Must(template.ParseFiles("internal/views/auth/login.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
 	templates["projects/index.html"] = template.Must(template.ParseFiles("internal/views/projects/index.html", "internal/views/projects/_project.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	templates["projects/new.html"] = template.Must(template.ParseFiles("internal/views/projects/new.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
-	templates["projects/show.html"] = template.Must(template.ParseFiles("internal/views/projects/show.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
+	templates["projects/show.html"] = template.Must(template.ParseFiles("internal/views/projects/show.html", "internal/views/projects/_start_stop_button.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	e.Renderer = &Template{
 		templates: templates,
 	}
