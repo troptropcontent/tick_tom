@@ -14,6 +14,7 @@ import (
 	"github.com/markbates/goth/providers/google"
 	"github.com/troptropcontent/tick_tom/internal/env"
 	"github.com/troptropcontent/tick_tom/internal/handlers/auth"
+	projects_handlers "github.com/troptropcontent/tick_tom/internal/handlers/projects"
 	"github.com/troptropcontent/tick_tom/internal/handlers/root"
 	db_initializer "github.com/troptropcontent/tick_tom/internal/initializers/db"
 	env_initializer "github.com/troptropcontent/tick_tom/internal/initializers/env"
@@ -61,8 +62,11 @@ func main() {
 
 	// Renderer
 	templates := make(map[string]*template.Template)
-	templates["root/index.html"] = template.Must(template.ParseFiles("internal/views/root/index.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
+	templates["root/index.html"] = template.Must(template.ParseFiles("internal/views/root/index.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	templates["auth/login.html"] = template.Must(template.ParseFiles("internal/views/auth/login.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
+	templates["projects/index.html"] = template.Must(template.ParseFiles("internal/views/projects/index.html", "internal/views/projects/_project.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
+	templates["projects/new.html"] = template.Must(template.ParseFiles("internal/views/projects/new.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
+	templates["projects/show.html"] = template.Must(template.ParseFiles("internal/views/projects/show.html", "internal/views/projects/_start_stop_button.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	e.Renderer = &Template{
 		templates: templates,
 	}
@@ -77,7 +81,15 @@ func main() {
 	e.POST("/auth/logout", auth.Logout).Name = "auth.logout"
 
 	// Root
-	e.GET("/", auth.RequireAuthenticatedUser(root.Index))
+	e.GET("/", auth.RequireAuthenticatedUser(root.Index)).Name = "root"
+
+	// Projects
+	projects := e.Group("projects")
+	projects.Use(auth.RequireAuthenticatedUser)
+	projects.GET("/new", projects_handlers.New).Name = "projects.new"
+	projects.POST("", projects_handlers.Create).Name = "projects.new"
+	projects.GET("", projects_handlers.Index).Name = "projetcs.index"
+	projects.GET("/:id", projects_handlers.Show).Name = "projetcs.show"
 
 	// Start server
 	e.Logger.Fatal(e.Start(":3000"))
