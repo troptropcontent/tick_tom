@@ -45,9 +45,6 @@ func Show(c echo.Context) error {
 		LastSession: last_session,
 		Translation: ShowTemplateTranslation{
 			ButtonMain: "Start",
-			Hours:      "hours",
-			Minutes:    "minutes",
-			Secondes:   "secondes",
 		},
 	})
 }
