@@ -1,6 +1,18 @@
 package env
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+	"runtime"
+)
+
+// This function return the path to the .env file
+func EnvFilePath() string {
+	_, b, _, _ := runtime.Caller(0)
+	root := filepath.Join(filepath.Dir(b), "../..")
+
+	return root + "/.env"
+}
 
 // This function return the value of the environment variable passed as parameter. It panics if the environment variable is not set.
 func Require(env_var string) string {
@@ -14,7 +26,7 @@ func Require(env_var string) string {
 
 // This function return the current environment it can be either production, development or test. It panics if the environment is not one of the three.
 func Current() string {
-	env := os.Getenv("FOO_ENV")
+	env := os.Getenv("GO_ENV")
 	if env == "" {
 		env = "development"
 	}
