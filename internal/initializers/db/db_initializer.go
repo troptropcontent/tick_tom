@@ -2,15 +2,14 @@ package db_initializer
 
 import (
 	"github.com/troptropcontent/tick_tom/db"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/troptropcontent/tick_tom/internal/env"
 )
 
 func Init() {
-	dsn := "host=db user=postgres password=postgres dbname=postgres"
-	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-	db.DB = database
+	db.DB = db.New(db.Config{
+		Host:     "db",
+		Username: env.Require("POSTGRES_USER"),
+		Password: env.Require("POSTGRES_PASSWORD"),
+		DbName:   db.DbName(),
+	})
 }
