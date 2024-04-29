@@ -32,6 +32,15 @@ func New(config Config) *gorm.DB {
 	return db
 }
 
+func Connect() *gorm.DB {
+	return New(Config{
+		Username: env.Require("POSTGRES_USER"),
+		Password: env.Require("POSTGRES_PASSWORD"),
+		DbName:   DbName(),
+		Host:     "db",
+	})
+}
+
 var (
 	DB *gorm.DB
 )
@@ -52,5 +61,17 @@ func Create() {
 	result := DB.Exec(fmt.Sprintf("CREATE DATABASE %s", DbName()))
 	if result.Error != nil {
 		panic(result.Error)
+	}
+}
+
+func EmptyTables(tables ...string) {
+	if env.Current() != "test" {
+		panic("Cannot empty tables in non-test environment")
+	}
+	if len(tables) == 0 {
+		tables = []string{"users", "projects", "sessions", "tasks"}
+	}
+	for _, table := range tables {
+		DB.Exec(fmt.Sprintf("TRUNCATE TABLE %s CASCADE", table))
 	}
 }
