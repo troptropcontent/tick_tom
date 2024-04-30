@@ -91,7 +91,7 @@ func main() {
 	projects.GET("", projects_handlers.Index).Name = "projects.index"
 	projects.GET("/:id", projects_handlers.Show).Name = "projetcs.show"
 	projects.POST("/:id/sessions/start", projects_handlers.StartSession).Name = "projects.start_session"
-	// projects.POST("/:id/sessions/stop", projects_handlers.StopSession).Name = "projects.stop_session"
+	projects.POST("/:id/sessions/stop", projects_handlers.StopSession).Name = "projects.stop_session"
 
 	// Start server
 	e.Logger.Fatal(e.Start(":3000"))
