@@ -36,3 +36,10 @@ func (s Session) IsInProgress() bool {
 func (s Session) IsStopped() bool {
 	return s.Status() == "stopped"
 }
+
+func (s Session) TimeSpent() time.Duration {
+	if s.IsInProgress() {
+		return time.Since(s.StartedAt)
+	}
+	return s.EndedAt.Sub(s.StartedAt)
+}
