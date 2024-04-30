@@ -10,15 +10,18 @@ import (
 
 type ShowTemplateTranslation struct {
 	ButtonMain string
+	TimerLabel string
 }
 type ShowTemplateData struct {
 	HeaderData struct {
 		Title string
 	}
+	ProjectID    uint
 	Name         string
 	Duration     string
 	IsInProgress bool
 	Translation  ShowTemplateTranslation
+	Error        string
 }
 
 func loadProject(user_id uint, id string) (models.Project, error) {
@@ -27,7 +30,7 @@ func loadProject(user_id uint, id string) (models.Project, error) {
 	return project, err
 }
 
-func loadTemplateData(project models.Project) (ShowTemplateData, error) {
+func loadShowTemplateData(project models.Project) (ShowTemplateData, error) {
 	var last_session models.Session
 	err := project.LastSession(project.UserID, &last_session)
 	if err != nil {
@@ -39,6 +42,7 @@ func loadTemplateData(project models.Project) (ShowTemplateData, error) {
 			IsInProgress: true,
 			Duration:     duration_helpers.RjustDuration(last_session.TimeSpent()),
 			Translation: ShowTemplateTranslation{
+				TimerLabel: "Time spent on this work session",
 				ButtonMain: "Stop",
 			},
 		}, nil
@@ -48,6 +52,7 @@ func loadTemplateData(project models.Project) (ShowTemplateData, error) {
 		IsInProgress: false,
 		Duration:     duration_helpers.RjustDuration(project.TotalTimeSpent()),
 		Translation: ShowTemplateTranslation{
+			TimerLabel: "Total time spent on this project",
 			ButtonMain: "Start",
 		},
 	}, nil
@@ -61,13 +66,14 @@ func Show(c echo.Context) error {
 		return err
 	}
 
-	template_data, err := loadTemplateData(project)
+	template_data, err := loadShowTemplateData(project)
 	if err != nil {
 		return err
 	}
 
 	template_data.Name = project.Name
 	template_data.HeaderData.Title = project.Name
+	template_data.ProjectID = project.ID
 
 	return c.Render(200, "projects/show.html", template_data)
 }

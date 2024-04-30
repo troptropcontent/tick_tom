@@ -4,8 +4,9 @@
     <head>
       <title>{{template "title" .}}</title>
       <link rel="stylesheet" href="/static/css/application.css">
+      <!-- <script src="/static/js/htmx.min.js"></script> -->
     </head>
-    <body>
+    <body class="flex flex-col min-h-screen">
       {{template "components/navbar.html"}}
       <section class="flex flex-col mx-10 gap-3 grow my-5 bg-white p-3 rounded-md shadow-sm">
         {{template "body" .}}
