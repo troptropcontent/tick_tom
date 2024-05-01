@@ -44,5 +44,5 @@ func StopSession(c echo.Context) error {
 	template_data.HeaderData.Title = project.Name
 	template_data.ProjectID = project.ID
 
-	return c.Render(200, "projects/show.html", template_data)
+	return c.Render(200, "projects/start_stop_session.partial.html", template_data)
 }

@@ -4,7 +4,8 @@
     <head>
       <title>{{template "title" .}}</title>
       <link rel="stylesheet" href="/static/css/application.css">
-      <!-- <script src="/static/js/htmx.min.js"></script> -->
+      <script src="/static/javascript/htmx.min.js"></script>
+      <script type="module" src="/static/javascript/application.js"></script>
     </head>
     <body class="flex flex-col min-h-screen">
       {{template "components/navbar.html"}}
@@ -12,6 +13,5 @@
         {{template "body" .}}
       </section>
     </body>
-    <script src="/static/javascript/ticker.js"></script>
   </html>
 {{end}}
