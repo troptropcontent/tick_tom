@@ -60,3 +60,8 @@ func (p Project) TotalTimeSpent() time.Duration {
 
 	return duration
 }
+
+func (p Project) LastSession(user_id uint, session *Session) error {
+	result := db.DB.Where(&Session{HolderID: p.ID, HolderType: "projects", UserID: user_id}).Order("started_at desc").Limit(1).Find(session)
+	return result.Error
+}

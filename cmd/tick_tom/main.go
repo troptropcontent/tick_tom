@@ -4,6 +4,7 @@ import (
 	"errors"
 	"html/template"
 	"io"
+	"strings"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -37,6 +38,9 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 		err := errors.New("Template not found -> " + name)
 		return err
 	}
+	if strings.HasSuffix(name, ".partial.html") {
+		return tmpl.ExecuteTemplate(w, name, data)
+	}
 	return tmpl.ExecuteTemplate(w, "application/layout.html", data)
 }
 
@@ -66,7 +70,8 @@ func main() {
 	templates["auth/login.html"] = template.Must(template.ParseFiles("internal/views/auth/login.html", "internal/views/application/layout.html", "internal/views/components/navbar.html"))
 	templates["projects/index.html"] = template.Must(template.ParseFiles("internal/views/projects/index.html", "internal/views/projects/_project.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
 	templates["projects/new.html"] = template.Must(template.ParseFiles("internal/views/projects/new.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
-	templates["projects/show.html"] = template.Must(template.ParseFiles("internal/views/projects/show.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
+	templates["projects/show.html"] = template.Must(template.ParseFiles("internal/views/projects/show.html", "internal/views/projects/start_stop_session.partial.html", "internal/views/application/layout.html", "internal/views/components/navbar.html", "internal/views/components/header.html"))
+	templates["projects/start_stop_session.partial.html"] = template.Must(template.ParseFiles("internal/views/projects/start_stop_session.partial.html"))
 	e.Renderer = &Template{
 		templates: templates,
 	}
@@ -90,6 +95,8 @@ func main() {
 	projects.POST("", projects_handlers.Create).Name = "projects.new"
 	projects.GET("", projects_handlers.Index).Name = "projects.index"
 	projects.GET("/:id", projects_handlers.Show).Name = "projetcs.show"
+	projects.POST("/:id/sessions/start", projects_handlers.StartSession).Name = "projects.start_session"
+	projects.POST("/:id/sessions/stop", projects_handlers.StopSession).Name = "projects.stop_session"
 
 	// Start server
 	e.Logger.Fatal(e.Start(":3000"))
